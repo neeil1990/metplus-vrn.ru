@@ -4,7 +4,11 @@ $APPLICATION->SetPageProperty("keywords", "главная страница");
 $APPLICATION->SetPageProperty("description", "ООО «КОРПОРАЦИЯ МЕТАЛЛИНВЕСТ» предлагает купить изделия из металлопроката в Воронеже по ценам производителя! Широкий ассортимент продукции в нашем каталоге!");
 $APPLICATION->SetPageProperty("title", "ООО «КОРПОРАЦИЯ МЕТАЛЛИНВЕСТ» - изделия из металлопроката в Воронеже по низким ценам!");
 $APPLICATION->SetTitle("ООО «КОРПОРАЦИЯ МЕТАЛЛИНВЕСТ» - изделия из металлопроката");
-?><main class="main-content">
+
+// dev branch
+?>
+
+<main class="main-content">
 
         <?$APPLICATION->IncludeComponent(
 	"bitrix:news.line", 
