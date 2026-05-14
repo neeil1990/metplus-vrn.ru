@@ -2,7 +2,7 @@
 define("HIDE_SIDEBAR", true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Каталог продукции Металлинвест Плюс");
-$IBLOCK_ID = 13;
+$IBLOCK_ID = 35;
 
 $link = explode('/', $APPLICATION->GetCurPage(false));
 TrimArr($link);

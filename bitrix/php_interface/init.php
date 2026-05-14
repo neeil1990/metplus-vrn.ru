@@ -1,5 +1,11 @@
 <?php
 
+// Подключаем файл с обработчиком
+require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/php_interface/include/price_updater.php";
+
+// Регистрируем событие
+AddEventHandler("iblock", "OnAfterIBlockElementUpdate", array("PriceUpdater", "onAfterIBlockElementUpdate"));
+
 function priceDiscount($id){
     global $USER;
     $ar_res_price = CCatalogProduct::GetOptimalPrice($id, 1, $USER->GetUserGroupArray(), 'N');

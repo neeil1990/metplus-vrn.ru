@@ -6,6 +6,7 @@ bitrix/license_key.php
 bitrix/.settings.php
 .idea/*
 .osp/*
+.cursor/*
 bitrix/managed_cache/*
 bitrix/cache/*
 bitrix/stack_cache/*
