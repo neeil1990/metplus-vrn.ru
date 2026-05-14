@@ -1,6 +1,7 @@
 upload/*
 bitrix/php_interface/*
 !/bitrix/php_interface/init.php
+!/bitrix/php_interface/include
 bitrix/catalog_export/*
 bitrix/license_key.php
 bitrix/.settings.php
