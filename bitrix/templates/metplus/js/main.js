@@ -543,6 +543,7 @@ jQuery(document).ready(function($) {
     }, 800);
     return false;
   });
+
   $('input[type="tel"]').inputmask("+7 (999) 999 99 99", {
     "clearIncomplete": true,
     showMaskOnHover: false,
@@ -556,9 +557,32 @@ jQuery(document).ready(function($) {
     inputPlaceholder: "Введите название или марку стали",
   });
 
-  $('#success_msg').modal('show')
+  $('#success_msg').modal('show');
 
+  $('.product-table [name="pieces"]').on('input', function() {
+    let self = $(this);
+    let metersInOnePiece = getMetersInOnePiece(self);
+    let pieces = parseFloat(self.val());
+    let meters = (pieces * metersInOnePiece).toFixed(1);
+
+    $('.product-table [name="meters"]').val(meters);
+  });
+
+  $('.product-table [name="meters"]').on('input', function() {
+    let self = $(this);
+    let metersInOnePiece = getMetersInOnePiece(self);
+    let meters = parseFloat(self.val());
+    let pieces = (meters / metersInOnePiece).toFixed(1);
+
+    $('.product-table [name="pieces"]').val(pieces);
+  });
+
+  function getMetersInOnePiece($obj)
+  {
+    return parseFloat($obj.attr("data-meters-in-one-piece"))
+  }
 });
+
 if ($('.map-container').length) {
   YaMapsShown = false;
   $(window).on("scroll load resize", function() {

@@ -54,10 +54,10 @@ if(count($arResult['ITEMS'])) :
                 </div>
             </td>
             <td>
-                <input type="text" placeholder="0.0" class="float-input" data-type="meters">
+                <input type="number" class="product-table-input" min="0" step="0.1" placeholder="0.0" name="meters" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
             <td>
-                <input type="text" placeholder="0.0" class="float-input" data-type="pieces">
+                <input type="number" class="product-table-input" min="0" step="0.1" placeholder="0.0" name="pieces" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
             <td>0</td>
             <td>
