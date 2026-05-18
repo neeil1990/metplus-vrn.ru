@@ -4,7 +4,7 @@
 
 class PriceUpdater {
 
-    private static $iblockId = "35";
+    private static $iblockId = "36";
     private static $priceTypeId = 16;
     private static $pricePerMeterId = 17;
     private static $pricePerMeterPlus20Id = 18;
@@ -29,7 +29,7 @@ class PriceUpdater {
     private static function calculatePerMeterPrice($arFields, $propValues)
     {
         $basePrice = self::getPrice($arFields["ID"], self::$priceTypeId);
-        $coefficient = (float) ($propValues["KOEFFITSENT_RASCHET"] ?? 0);
+        $coefficient = self::getCoefficientRaschet($propValues);
 
         if (!$basePrice) {
             return 0;
@@ -82,5 +82,10 @@ class PriceUpdater {
         {
             CPrice::Add($arFields);
         }
+    }
+
+    private static function getCoefficientRaschet($propValues)
+    {
+        return (float) ($propValues["KOEFFITSENT_RASCHET"] ?? 0);
     }
 }

@@ -1,8 +1,8 @@
-<?
+<?php
 define("HIDE_SIDEBAR", true);
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Каталог продукции Металлинвест Плюс");
-$IBLOCK_ID = 35;
+$IBLOCK_ID = 36;
 
 $link = explode('/', $APPLICATION->GetCurPage(false));
 TrimArr($link);
@@ -10,7 +10,7 @@ $cat = array_shift($link);
 $code = array_pop($link);
 unset($link);
 if($code &&  $cat == "catalog"){
-    if($curSec = CIBlockSection::GetList(Array( $by => $order), Array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $code), false, array('NAME','UF_TOP_PIC'))->GetNext())
+    if($curSec = CIBlockSection::GetList([], Array('IBLOCK_ID' => $IBLOCK_ID, 'CODE' => $code), false, array('NAME','UF_TOP_PIC'))->GetNext())
         $background = CFile::GetPath($curSec['UF_TOP_PIC']);
 }
 ?>
