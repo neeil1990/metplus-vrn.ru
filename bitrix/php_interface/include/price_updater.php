@@ -9,26 +9,35 @@ class PriceUpdater {
     private static $pricePerMeterId = 17;
     private static $pricePerMeterPlus20Id = 18;
 
-    public static function onAfterIBlockElementUpdate(&$arFields)
+    public static function recalculatePricesAfter1C($arParams, $arFields)
     {
-        if (!$arFields["RESULT"]) return;
-
         if (!CModule::IncludeModule("catalog") || !CModule::IncludeModule("iblock")) return;
 
-        $elementId = $arFields["ID"];
-        $iblockId = $arFields["IBLOCK_ID"];
+        $elements = CIBlockElement::GetList(
+            [],
+            [
+                "IBLOCK_ID" => self::$iblockId,
+                ">=TIMESTAMP_X" => ConvertTimeStamp(time() - 3600, "FULL"),
+                "ACTIVE" => "Y"
+            ],
+            false,
+            false,
+            ["ID", "IBLOCK_ID"]
+        );
 
-        if ($arFields["IBLOCK_ID"] != self::$iblockId) return;
+        while ($element = $elements->Fetch()) {
+            $productId = $element['ID'];
 
-        $propValues = self::getPropertyValues($elementId, $iblockId);
+            $propValues = self::getPropertyValues($productId, self::$iblockId);
 
-        self::updatePrice($elementId, self::$pricePerMeterId, self::calculatePerMeterPrice($arFields, $propValues));
-        self::updatePrice($elementId, self::$pricePerMeterPlus20Id, self::calculatePerMeterPlus20Price($arFields, $propValues));
+            self::updatePrice($productId, self::$pricePerMeterId, self::calculatePerMeterPrice($productId, $propValues));
+            self::updatePrice($productId, self::$pricePerMeterPlus20Id, self::calculatePerMeterPlus20Price($productId, $propValues));
+        }
     }
 
-    private static function calculatePerMeterPrice($arFields, $propValues)
+    private static function calculatePerMeterPrice($productId, $propValues)
     {
-        $basePrice = self::getPrice($arFields["ID"], self::$priceTypeId);
+        $basePrice = self::getPrice($productId, self::$priceTypeId);
         $coefficient = self::getCoefficientRaschet($propValues);
 
         if (!$basePrice) {
@@ -40,9 +49,9 @@ class PriceUpdater {
         return $price * $coefficient;
     }
 
-    private static function calculatePerMeterPlus20Price($arFields, $propValues)
+    private static function calculatePerMeterPlus20Price($productId, $propValues)
     {
-        return 1.2 * self::calculatePerMeterPrice($arFields, $propValues);
+        return 1.2 * self::calculatePerMeterPrice($productId, $propValues);
     }
 
     private static function getPropertyValues($elementId, $iblockId)

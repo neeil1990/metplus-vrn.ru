@@ -4,7 +4,7 @@
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/php_interface/include/price_updater.php";
 
 // Регистрируем событие
-AddEventHandler("iblock", "OnAfterIBlockElementUpdate", array("PriceUpdater", "onAfterIBlockElementUpdate"));
+AddEventHandler("catalog", "OnSuccessCatalogImport1C", array("PriceUpdater", "recalculatePricesAfter1C"));
 
 function priceDiscount($id){
     global $USER;
