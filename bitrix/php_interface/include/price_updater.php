@@ -5,9 +5,12 @@
 class PriceUpdater {
 
     private static $iblockId = "36";
+    private static $basePriceId = 1;
     private static $priceTypeId = 16;
     private static $pricePerMeterId = 17;
     private static $pricePerMeterPlus20Id = 18;
+    private static $meterMeasureId = 1;
+    private static $ratioValue = 0.1;
 
     public static function recalculatePricesAfter1C($arParams, $arFields)
     {
@@ -30,8 +33,16 @@ class PriceUpdater {
 
             $propValues = self::getPropertyValues($productId, self::$iblockId);
 
-            self::updatePrice($productId, self::$pricePerMeterId, self::calculatePerMeterPrice($productId, $propValues));
-            self::updatePrice($productId, self::$pricePerMeterPlus20Id, self::calculatePerMeterPlus20Price($productId, $propValues));
+            $calculatePerMeterPrice = self::calculatePerMeterPrice($productId, $propValues);
+
+            if ($calculatePerMeterPrice > 0) {
+
+                self::updateMeasure($productId, self::$meterMeasureId, self::$ratioValue);
+
+                self::updatePrice($productId, self::$basePriceId, $calculatePerMeterPrice);
+                self::updatePrice($productId, self::$pricePerMeterId, $calculatePerMeterPrice);
+                self::updatePrice($productId, self::$pricePerMeterPlus20Id, self::calculatePerMeterPlus20Price($productId, $propValues));
+            }
         }
     }
 
@@ -96,5 +107,33 @@ class PriceUpdater {
     private static function getCoefficientRaschet($propValues)
     {
         return (float) ($propValues["KOEFFITSENT_RASCHET"] ?? 0);
+    }
+
+    private static function updateMeasure($productId, $measureId, $ratioValue)
+    {
+        $result = \Bitrix\Catalog\ProductTable::update($productId, [
+            'MEASURE' => $measureId
+        ]);
+
+        if ($result->isSuccess()) {
+
+            $ratioRow = \Bitrix\Catalog\MeasureRatioTable::getList([
+                'select' => ['ID'],
+                'filter' => ['=PRODUCT_ID' => $productId],
+                'limit' => 1
+            ])->fetch();
+
+            if ($ratioRow) {
+                \Bitrix\Catalog\MeasureRatioTable::update($ratioRow['ID'], [
+                    'RATIO' => $ratioValue
+                ]);
+            } else {
+                \Bitrix\Catalog\MeasureRatioTable::add([
+                    'PRODUCT_ID' => $productId,
+                    'RATIO' => $ratioValue,
+                    'IS_DEFAULT' => 'Y'
+                ]);
+            }
+        }
     }
 }

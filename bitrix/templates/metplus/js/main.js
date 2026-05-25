@@ -80,6 +80,7 @@ jQuery(document).ready(function($) {
     $(this).closest('tr').find('.product-item_cart-btn').trigger('click');
   });
   $(".product-table").on("click", ".product-item_cart-btn", function() {
+
     $(this).clone().css({
       'position': 'absolute',
       'z-index': '1000',
@@ -95,11 +96,18 @@ jQuery(document).ready(function($) {
       $(this).remove();
     });
 
-    $.get("/ajax/", { component: "add_cart", id : $(this).attr('id') }).done(function(data) {
+    let quantity = parseFloat($(this).closest('tr').find('[name="meters"]').val());
+
+    $.get("/ajax/", {
+      component: "add_cart",
+      id : $(this).attr('id'),
+      quantity : quantity,
+    }, function(data) {
       $.get("/ajax/", { component: "cart_small" }).done(function(cart) {
         $('.head-cart').html(cart);
       });
-    });
+      console.log(data);
+    }, "json");
 
     return false;
   });
@@ -565,7 +573,7 @@ jQuery(document).ready(function($) {
     let pieces = parseFloat(self.val());
     let meters = (pieces * metersInOnePiece).toFixed(1);
 
-    $('.product-table [name="meters"]').val(meters);
+    self.closest('tr').find('[name="meters"]').val(meters);
   });
 
   $('.product-table [name="meters"]').on('input', function() {
@@ -574,7 +582,7 @@ jQuery(document).ready(function($) {
     let meters = parseFloat(self.val());
     let pieces = (meters / metersInOnePiece).toFixed(1);
 
-    $('.product-table [name="pieces"]').val(pieces);
+    self.closest('tr').find('[name="pieces"]').val(pieces);
   });
 
   function getMetersInOnePiece($obj)
