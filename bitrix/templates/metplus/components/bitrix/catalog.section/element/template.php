@@ -39,7 +39,7 @@ if(count($arResult['ITEMS'])) :
 
     <tbody>
         <?php foreach ($arResult['ITEMS'] as $arItem): ?>
-        <tr data-price="<?=$arItem['RETAIL_PRICE']?>">
+        <tr data-price="<?=$arItem['RETAIL_PRICE']?>" data-length="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             <td class="product-table_first-cell">
                 <span class="product-item_name"><?=$arItem["NAME"];?></span>
                 <span class="product-availability">В наличии на складе.</span>

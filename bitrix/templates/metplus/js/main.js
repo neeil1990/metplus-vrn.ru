@@ -598,17 +598,16 @@ jQuery(document).ready(function($) {
    */
   function calculateProductTotal($row) {
     let meters = parseFloat($row.find('[name="meters"]').val()) || 0;
-    let pieces = parseFloat($row.find('[name="pieces"]').val()) || 0;
     let price = parseFloat($row.data('price')) || 0;
-    
+    let length = parseFloat($row.data('length')) || 0;
+
     if (meters === 0 || price === 0) {
       $row.find('.product-total').text('0.00');
       return;
     }
 
-    // Проверяем, является ли количество штук кратным 0.5 (целое число или полштуки)
-    // Коэффициент 1.2 применяется только если штуки не кратны 0.5
-    let coefficient = (pieces % 0.5 !== 0) ? 1.2 : 1;
+    let half = (length / 2);
+    let coefficient = (meters % half !== 0) ? 1.2 : 1;
     
     let total = (price * meters * coefficient).toFixed(2);
     $row.find('.product-total').text(number_format(total, 2, '.', ' '));
