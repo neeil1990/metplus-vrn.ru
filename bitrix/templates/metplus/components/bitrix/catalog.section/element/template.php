@@ -31,6 +31,7 @@ if(count($arResult['ITEMS'])) :
             <th>Наименование товара</th>
             <th>Метры</th>
             <th>Штуки</th>
+            <th>Цена</th>
             <th>Итог</th>
             <th>Купить</th>
         </tr>
@@ -38,7 +39,7 @@ if(count($arResult['ITEMS'])) :
 
     <tbody>
         <?php foreach ($arResult['ITEMS'] as $arItem): ?>
-        <tr>
+        <tr data-price="<?=$arItem['RETAIL_PRICE']?>">
             <td class="product-table_first-cell">
                 <span class="product-item_name"><?=$arItem["NAME"];?></span>
                 <span class="product-availability">В наличии на складе.</span>
@@ -59,7 +60,8 @@ if(count($arResult['ITEMS'])) :
             <td>
                 <input type="number" class="product-table-input" min="0" step="0.1" placeholder="0.0" name="pieces" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
-            <td>0</td>
+            <td class="product-price"><?=number_format($arItem['RETAIL_PRICE'], 2, '.', ' ')?></td>
+            <td class="product-total">0.00</td>
             <td>
                 <a href="javascript:void(0)" class="product-item_cart-btn main-btn" id="<?=$arItem['ID']?>"><span class="glipf-cart"></span></a>
             </td>

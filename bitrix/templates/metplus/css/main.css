@@ -4174,6 +4174,7 @@ align-items: center;
   color: #3d3c3c;
   position: relative;
   font-size: 1rem;
+  white-space: nowrap;
 }
 
 .product-table td:first-child {

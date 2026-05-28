@@ -574,6 +574,7 @@ jQuery(document).ready(function($) {
     let meters = (pieces * metersInOnePiece).toFixed(1);
 
     self.closest('tr').find('[name="meters"]').val(meters);
+    calculateProductTotal(self.closest('tr'));
   });
 
   $('.product-table [name="meters"]').on('input', function() {
@@ -583,11 +584,59 @@ jQuery(document).ready(function($) {
     let pieces = (meters / metersInOnePiece).toFixed(1);
 
     self.closest('tr').find('[name="pieces"]').val(pieces);
+    calculateProductTotal(self.closest('tr'));
   });
 
   function getMetersInOnePiece($obj)
   {
     return parseFloat($obj.attr("data-meters-in-one-piece"))
+  }
+
+  /**
+   * Расчет итоговой стоимости товара
+   * @param $row jQuery объект строки таблицы
+   */
+  function calculateProductTotal($row) {
+    let meters = parseFloat($row.find('[name="meters"]').val()) || 0;
+    let pieces = parseFloat($row.find('[name="pieces"]').val()) || 0;
+    let price = parseFloat($row.data('price')) || 0;
+    
+    if (meters === 0 || price === 0) {
+      $row.find('.product-total').text('0.00');
+      return;
+    }
+    
+    // Проверяем, целое ли число штук
+    // Если штуки целые (без дробной части), коэффициент не нужен
+    let coefficient = (pieces % 1 !== 0) ? 1.2 : 1;
+    
+    let total = (price * meters * coefficient).toFixed(2);
+    $row.find('.product-total').text(number_format(total, 2, '.', ' '));
+  }
+
+  /**
+   * Форматирование числа с разделителем тысяч
+   */
+  function number_format(number, decimals, dec_point, thousands_sep) {
+    number = (number + '').replace(/[^0-9+\-Ee.]/g, '');
+    var n = !isFinite(+number) ? 0 : +number,
+      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+      sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+      dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+      s = '',
+      toFixedFix = function(n, prec) {
+        var k = Math.pow(10, prec);
+        return '' + Math.round(n * k) / k;
+      };
+    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+    if (s[0].length > 3) {
+      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+    }
+    if ((s[1] || '').length < prec) {
+      s[1] = s[1] || '';
+      s[1] += new Array(prec - s[1].length + 1).join('0');
+    }
+    return s.join(dec);
   }
 });
 
