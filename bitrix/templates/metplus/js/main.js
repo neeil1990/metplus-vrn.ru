@@ -605,10 +605,10 @@ jQuery(document).ready(function($) {
       $row.find('.product-total').text('0.00');
       return;
     }
-    
-    // Проверяем, целое ли число штук
-    // Если штуки целые (без дробной части), коэффициент не нужен
-    let coefficient = (pieces % 1 !== 0) ? 1.2 : 1;
+
+    // Проверяем, является ли количество штук кратным 0.5 (целое число или полштуки)
+    // Коэффициент 1.2 применяется только если штуки не кратны 0.5
+    let coefficient = (pieces % 0.5 !== 0) ? 1.2 : 1;
     
     let total = (price * meters * coefficient).toFixed(2);
     $row.find('.product-total').text(number_format(total, 2, '.', ' '));
