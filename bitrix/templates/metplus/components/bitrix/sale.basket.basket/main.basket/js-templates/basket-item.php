@@ -17,6 +17,9 @@ use Bitrix\Main\Localization\Loc;
             <td>
                 <span class="cart-table_mobile-text">Название товара</span>
                 {{NAME}}
+                <div class="basket-item-custom-notes" style="color: #2fc6f6; font-size: 13px; margin-top: 5px;">
+                    {{NOTES}}
+                </div>
             </td>
 
             <?

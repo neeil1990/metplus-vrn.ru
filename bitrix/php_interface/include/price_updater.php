@@ -5,7 +5,6 @@
 class PriceUpdater {
 
     private static $iblockId = "36";
-    private static $basePriceId = 1;
     private static $priceTypeId = 16;
     private static $pricePerMeterId = 17;
     private static $pricePerMeterPlus20Id = 18;
@@ -36,10 +35,8 @@ class PriceUpdater {
             $calculatePerMeterPrice = self::calculatePerMeterPrice($productId, $propValues);
 
             if ($calculatePerMeterPrice > 0) {
-
                 self::updateMeasure($productId, self::$meterMeasureId, self::$ratioValue);
 
-                self::updatePrice($productId, self::$basePriceId, $calculatePerMeterPrice);
                 self::updatePrice($productId, self::$pricePerMeterId, $calculatePerMeterPrice);
                 self::updatePrice($productId, self::$pricePerMeterPlus20Id, self::calculatePerMeterPlus20Price($productId, $propValues));
             }

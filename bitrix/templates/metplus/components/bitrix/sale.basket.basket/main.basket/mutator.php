@@ -24,6 +24,7 @@ foreach ($this->basketItems as $row)
 		'ID' => $row['ID'],
 		'PRODUCT_ID' => $row['PRODUCT_ID'],
 		'NAME' => isset($row['~NAME']) ? htmlspecialchars_decode($row['~NAME']) : htmlspecialchars_decode($row['NAME']),
+		'NOTES' => isset($row['~NOTES']) ? htmlspecialchars_decode($row['~NOTES']) : htmlspecialchars_decode((string)$row['NOTES']),
 		'QUANTITY' => $row['QUANTITY'],
 		'PROPS' => $row['PROPS'],
 		'PROPS_ALL' => $row['PROPS_ALL'],
