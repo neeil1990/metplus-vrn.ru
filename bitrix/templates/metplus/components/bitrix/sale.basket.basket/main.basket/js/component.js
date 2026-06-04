@@ -668,8 +668,13 @@
 						}
 					}
 
+					const ids = result.BASKET_DATA.BASKET_ITEM_RENDER_DATA.map(data => data.ID);
+					let getItemsToEdit = [...new Set([...this.getItemsToEdit(), ...ids])];
+
+					console.log(getItemsToEdit);
+
 					this.applyBasketResult(result.BASKET_DATA);
-					this.editBasketItems(this.getItemsToEdit());
+					this.editBasketItems(getItemsToEdit);
 					this.editTotal();
 
 					this.applyPriceAnimation();
@@ -1199,6 +1204,8 @@
 			{
 				return;
 			}
+
+			console.log('createBasketItem');
 
 			var basketItemTemplate = this.getTemplate('basket-item-template');
 			if (basketItemTemplate)
