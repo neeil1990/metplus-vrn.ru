@@ -10,7 +10,7 @@ use Bitrix\Main\Localization\Loc;
 ?>
 <script id="basket-item-template" type="text/html">
 
-	<tr id="basket-item-{{ID}}" data-entity="basket-item" data-id="{{ID}}">
+	<tr class="basket-items-list-item-container" id="basket-item-{{ID}}" data-entity="basket-item" data-id="{{ID}}">
 
 		{{^SHOW_RESTORE}}
 

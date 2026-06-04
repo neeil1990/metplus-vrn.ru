@@ -1,24 +1,26 @@
 <?php
 use Bitrix\Main\EventManager;
-use Bitrix\Sale\BasketItem;
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/php_interface/include/functions.php";
 
-// Подключаем файл с обработчиком
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/php_interface/include/price_updater.php";
-
-// Регистрируем событие
 AddEventHandler("catalog", "OnSuccessCatalogImport1C", array("PriceUpdater", "recalculatePricesAfter1C"));
 
 require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/php_interface/include/custom_price.php";
-
 EventManager::getInstance()->addEventHandler(
     'catalog',
     'OnGetOptimalPrice',
     'customBasketPriceTypeHandler'
 );
 
-function priceDiscount($id){
+require_once $_SERVER["DOCUMENT_ROOT"] . "/bitrix/php_interface/include/basket_update.php";
+EventManager::getInstance()->addEventHandler(
+    'sale',
+    'OnSaleBasketBeforeSaved',
+    'OnSaleBasketBeforeSavedHandler'
+);
+
+function priceDiscount($id) {
     global $USER;
     $ar_res_price = CCatalogProduct::GetOptimalPrice($id, 1, $USER->GetUserGroupArray(), 'N');
     if($ar_res_price['DISCOUNT_PRICE'])

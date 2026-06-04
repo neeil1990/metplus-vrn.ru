@@ -661,6 +661,13 @@
 						this.deleteBasketItems(result.MERGED_BASKET_ITEMS, false, true);
 					}
 
+					for (const id in this.items) {
+						if (!result.BASKET_DATA.BASKET_ITEM_RENDER_DATA.some(item => item.ID === id)) {
+							this.deleteBasketItem(id);
+							delete this.items[id];
+						}
+					}
+
 					this.applyBasketResult(result.BASKET_DATA);
 					this.editBasketItems(this.getItemsToEdit());
 					this.editTotal();
@@ -674,6 +681,7 @@
 					{
 						BX.Sale.OrderAjaxComponent.sendRequest();
 					}
+
 				}, this),
 				onfailure: BX.delegate(function() {
 					this.actionPool.doProcessing(false);
