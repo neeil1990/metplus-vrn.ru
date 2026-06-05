@@ -63,7 +63,7 @@ if(count($arResult['ITEMS'])) :
             <td class="product-price"><?=number_format($arItem['RETAIL_PRICE'], 2, '.', ' ')?></td>
             <td class="product-total">0.00</td>
             <td>
-                <a href="javascript:void(0)" class="product-item_cart-btn main-btn" id="<?=$arItem['ID']?>"><span class="glipf-cart"></span></a>
+                <a href="javascript:void(0)" class="product-item_cart-btn main-btn" id="<?=$arItem['ID']?>" iblock_id="<?=$arItem['IBLOCK_ID']?>"><span class="glipf-cart"></span></a>
             </td>
         </tr>
         <?php endforeach;?>

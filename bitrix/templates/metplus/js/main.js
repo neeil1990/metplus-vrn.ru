@@ -76,41 +76,71 @@ jQuery(document).ready(function($) {
     });
   }
 
-  $('.product-table').on('click', '.product-item_buy-btn', function () {
-    $(this).closest('tr').find('.product-item_cart-btn').trigger('click');
-  });
-  $(".product-table").on("click", ".product-item_cart-btn", function() {
+  function cartFlying($el)
+  {
+    let $hc = $(".head-cart");
 
-    $(this).clone().css({
+    $el.clone().css({
       'position': 'absolute',
       'z-index': '1000',
       'width': '57px',
-      top: $(this).offset().top,
-      left: $(this).offset().left
+      top: $el.offset().top,
+      left: $el.offset().left
     }).appendTo("body").animate({
       opacity: 0.05,
-      left: $(".head-cart").offset()['left'],
-      top: $(".head-cart").offset()['top'],
+      left: $hc.offset()['left'],
+      top: $hc.offset()['top'],
       width: 20
     }, 700, function() {
       $(this).remove();
     });
+  }
 
-    let quantity = parseFloat($(this).closest('tr').find('[name="meters"]').val());
-
+  function addToCartRequest(iblock_id, id, quantity) {
     $.get("/ajax/", {
       component: "add_cart",
-      id : $(this).attr('id'),
+      id : id,
+      iblock_id : iblock_id,
+      service_code : sessionStorage.getItem('service_code'),
       quantity : quantity,
     }, function(data) {
+
       $.get("/ajax/", { component: "cart_small" }).done(function(cart) {
         $('.head-cart').html(cart);
       });
-      console.log(data);
+
     }, "json");
+  }
+
+  $(".product-table").on("click", ".product-item_cart-btn", function() {
+
+    let $self = $(this);
+    let iblock_id = $(this).attr('iblock_id');
+    let id = $(this).attr('id');
+    let quantity = parseFloat($(this).closest('tr').find('[name="meters"]').val());
+
+    $.fancybox.open({
+      src  : `/ajax/cutting_services_options.php?iblock_id=${iblock_id}&id=${id}`,
+      type : 'ajax',
+      opts : {
+        beforeClose : function( instance, current, e ) {
+          let service_code = sessionStorage.getItem('service_code');
+
+          if (!service_code) {
+            return false;
+          }
+
+          cartFlying($self);
+          addToCartRequest(iblock_id, id, quantity);
+        }
+      }
+    });
 
     return false;
   });
+
+
+
   $(".product-item_buy-btn").on("click", function() {
     $(this).clone().css({
       'position': 'absolute',
