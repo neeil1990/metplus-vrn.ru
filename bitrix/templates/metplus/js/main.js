@@ -122,22 +122,25 @@ jQuery(document).ready(function($) {
   $(".product-table").on("click", ".add-to-cart-with-cutting-action", function(e) {
     e.preventDefault();
 
-    let $self = $(this);
+    let $cartBtn = $(this);
     let id = $(this).attr('id');
-    let iblock_id = $(this).attr('iblock_id');
+    let iblockId = $(this).attr('iblock_id');
     let quantity = parseFloat($(this).closest('tr').find('[name="meters"]').val());
 
     $.fancybox.open({
-      src  : `/ajax/cutting_services_options.php?iblock_id=${iblock_id}&id=${id}`,
+      src  : `/ajax/cutting_services_options.php?iblock_id=${iblockId}&id=${id}`,
       type : 'ajax',
       opts : {
         afterShow : function( instance, current ) {
-          current.$content.find('.product-item_cart-btn').click(function (e) {
+          let $self = current.$content;
+          $self.find('.product-item_cart-btn').click(function (e) {
             e.preventDefault();
+
+            sessionStorage.setItem('service_code', $self.find('select').val())
 
             instance.close();
 
-            addToCartRequest(iblock_id, id, quantity, $self);
+            addToCartRequest(iblockId, id, quantity, $cartBtn);
           });
         }
       }
