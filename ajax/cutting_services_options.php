@@ -13,17 +13,21 @@ $options = getProductCuttingServices($iblockId, $productId);
 
 <div class="message">
     <h2>Выберите услугу</h2>
-    <select id="<?=$service_key?>" style="width: 100%;padding: 5px 10px;" onchange="sessionStorage.setItem('<?=$service_key?>', this.value)">
-        <option value="">Выбрать</option>
+    <select id="<?=$service_key?>" style="width: 100%;padding: 5px 10px;margin-bottom:10px;" onchange="sessionStorage.setItem('<?=$service_key?>', this.value)">
         <?php foreach ($options as $option): ?>
             <option value="<?=$option['CODE']?>">
                 <?=$option['NAME']?> <?=$option['VALUE'] ? ' - ' . $option['VALUE'] : ''?>
             </option>
         <?php endforeach; ?>
     </select>
+    <a href="javascript:void(0)" class="product-item_cart-btn main-btn">
+        <span class="glipf-cart"></span> Добавить в корзину
+    </a>
 </div>
 
 <script>
     // При загрузке страницы восстанавливаем выбранное значение
-    document.getElementById('<?=$service_key?>').value = sessionStorage.getItem('<?=$service_key?>');
+    if (sessionStorage.getItem('<?=$service_key?>')) {
+        document.getElementById('<?=$service_key?>').value = sessionStorage.getItem('<?=$service_key?>');
+    }
 </script>

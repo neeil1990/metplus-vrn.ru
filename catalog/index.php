@@ -64,7 +64,11 @@ if($code &&  $cat == "catalog"){
 		"USE_COMPARE" => "N",
 		"PRICE_CODE" => array(
 			0 => "BASE",
+			1 => "1-1000",
+			2 => "PER_METER",
+			3 => "PER_METER_PLUS20",
 		),
+        "FILL_ITEM_ALL_PRICES" => "Y",
 		"USE_PRICE_COUNT" => "N",
 		"SHOW_PRICE_COUNT" => "1",
 		"PRICE_VAT_INCLUDE" => "Y",

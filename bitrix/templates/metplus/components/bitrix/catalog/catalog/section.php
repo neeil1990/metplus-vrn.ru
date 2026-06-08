@@ -202,7 +202,7 @@ if ($isFilter)
 						</div>
                         <? endif;?>
 
-                        <?
+                        <?php
                         $intSectionID = $APPLICATION->IncludeComponent(
                             "bitrix:catalog.section",
                             "element", array(
@@ -240,7 +240,8 @@ if ($isFilter)
                             "DISPLAY_COMPARE" => $arParams["USE_COMPARE"],
                             "PAGE_ELEMENT_COUNT" => $arParams["PAGE_ELEMENT_COUNT"],
                             "LINE_ELEMENT_COUNT" => $arParams["LINE_ELEMENT_COUNT"],
-                            "PRICE_CODE" => $arParams["~PRICE_CODE"],
+                            "PRICE_CODE" => $arParams["PRICE_CODE"],
+                            "FILL_ITEM_ALL_PRICES" => $arParams["FILL_ITEM_ALL_PRICES"],
                             "USE_PRICE_COUNT" => $arParams["USE_PRICE_COUNT"],
                             "SHOW_PRICE_COUNT" => $arParams["SHOW_PRICE_COUNT"],
 

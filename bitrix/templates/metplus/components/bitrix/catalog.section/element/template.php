@@ -29,10 +29,11 @@ if(count($arResult['ITEMS'])) :
     <thead>
         <tr>
             <th>Наименование товара</th>
+            <?php foreach ($arResult['CATALOG_PRICE'] as $price): ?>
+                <th><?=$price['NAME']?></th>
+            <?php endforeach; ?>
             <th>Метры</th>
             <th>Штуки</th>
-            <th>Цена</th>
-            <th>Итог</th>
             <th>Купить</th>
         </tr>
     </thead>
@@ -54,16 +55,19 @@ if(count($arResult['ITEMS'])) :
                     <a href="javascript:void(0)" class="main-btn product-item_buy-btn">Купить</a>
                 </div>
             </td>
+            <?php foreach ($arResult['CATALOG_PRICE'] as $price): ?>
+                <td><?=$arItem["ITEM_ALL_PRICES"][0]["PRICES"][$price['CATALOG_GROUP_ID']]['PRINT_PRICE'] ?? 0?></td>
+            <?php endforeach; ?>
             <td>
-                <input type="number" class="product-table-input" min="0" step="0.1" placeholder="0.0" name="meters" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
+                <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="meters" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
             <td>
-                <input type="number" class="product-table-input" min="0" step="0.1" placeholder="0.0" name="pieces" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
+                <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="pieces" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
-            <td class="product-price"><?=number_format($arItem['RETAIL_PRICE'], 2, '.', ' ')?></td>
-            <td class="product-total">0.00</td>
             <td>
-                <a href="javascript:void(0)" class="product-item_cart-btn main-btn" id="<?=$arItem['ID']?>" iblock_id="<?=$arItem['IBLOCK_ID']?>"><span class="glipf-cart"></span></a>
+                <a href="javascript:void(0)" class="<?=$arItem['ADD_TO_CART_CLASS']?> product-item_cart-btn main-btn" id="<?=$arItem['ID']?>" iblock_id="<?=$arItem['IBLOCK_ID']?>">
+                    <span class="glipf-cart"></span>
+                </a>
             </td>
         </tr>
         <?php endforeach;?>

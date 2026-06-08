@@ -1,4 +1,7 @@
-<? if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
+<?php if (!defined('B_PROLOG_INCLUDED') || B_PROLOG_INCLUDED !== true) die();
+
+use Bitrix\Main\Loader;
+use Bitrix\Catalog\GroupLangTable;
 
 /**
  * @var CBitrixComponentTemplate $this
@@ -9,27 +12,37 @@
 $component = $this->getComponent();
 $arParams = $component->applyTemplateModifications();
 
-foreach ($arResult['ITEMS'] as &$arItem) {
-    $arItem["NAME"] = ($arItem['PROPERTIES']['SEO_NAME']['VALUE']) ? $arItem['PROPERTIES']['SEO_NAME']['VALUE'] : htmlspecialchars_decode(preg_replace(array('|[\s]+|s','/\(|\)/'), array(' ', '"'), trim($arItem['NAME'])));
+$arResult['CATALOG_PRICE'] = [];
 
-    // Получение розничной цены
-    if (!empty($arItem['ITEM_PRICES'])) {
-        foreach ($arItem['ITEM_PRICES'] as $priceInfo) {
-            // Проверяем тип цены "Розничная цена"
-            if ($priceInfo['PRICE_TYPE_ID'] == 1) {  // Обычно ID 1 = Розничная цена, но может быть и другой
-                $arItem['RETAIL_PRICE'] = $priceInfo['PRICE'];
-                break;
-            }
+foreach ($arResult['ITEMS'] as &$arItem) {
+    $arItem['ADD_TO_CART_CLASS'] = 'add-to-cart-action';
+
+    if ($arItem['PROPERTIES']['REZKA_GAZ_RASCHET']['VALUE'] || $arItem['PROPERTIES']['REZKA_ABRAZIV_RASCHET']['VALUE']) {
+        $arItem['ADD_TO_CART_CLASS'] = 'add-to-cart-with-cutting-action';
+    }
+
+    foreach (array_keys($arItem["ITEM_ALL_PRICES"][0]["PRICES"]) as $catalog_price_id) {
+        if (!isset($arResult['CATALOG_PRICE'][$catalog_price_id])) {
+            $arResult['CATALOG_PRICE'][$catalog_price_id] = [
+                'CATALOG_GROUP_ID' => $catalog_price_id,
+            ];
         }
     }
+}
 
-    // Если не найдена по типу, берем первую доступную цену
-    if (empty($arItem['RETAIL_PRICE']) && !empty($arItem['ITEM_PRICES'])) {
-        $arItem['RETAIL_PRICE'] = $arItem['ITEM_PRICES'][0]['PRICE'];
-    }
+foreach ($arResult['CATALOG_PRICE'] as $id => &$arPrice) {
+    $rsGroup = GroupLangTable::getList([
+        'filter' => [
+            '=LANG' => LANGUAGE_ID,
+            '=CATALOG_GROUP_ID' => $id
+        ],
+        'select' => [
+            'NAME',
+            'XML_ID' => 'CATALOG_GROUP.XML_ID'
+        ]
+    ]);
 
-    // Если нет ITEM_PRICES, берем встроенную цену
-    if (empty($arItem['RETAIL_PRICE'])) {
-        $arItem['RETAIL_PRICE'] = $arItem['PRICE'] ?? 0;
+    if ($arGroup = $rsGroup->fetch()) {
+        $arPrice['NAME'] = $arGroup['NAME'];
     }
 }
