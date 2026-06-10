@@ -7,6 +7,7 @@ require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.ph
 use Bitrix\Main\Loader;
 use Bitrix\Catalog\Product\Basket;
 use Bitrix\Main\Context;
+use Bitrix\Sale;
 
 $GLOBALS['APPLICATION']->RestartBuffer();
 header('Content-Type: application/json; charset=utf-8');
@@ -16,11 +17,10 @@ if (!Loader::includeModule('catalog') || !Loader::includeModule('sale')) {
     die();
 }
 
-$iblockId = isset($_GET['iblock_id']) ? (int)$_GET['iblock_id'] : 0;
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $quantity = isset($_GET['quantity']) ? floatval(str_replace(',', '.', $_GET['quantity'])) : 1.0;
 
-if ($productId <= 0 || $quantity <= 0 || $iblockId <= 0) {
+if ($productId <= 0 || $quantity <= 0) {
     echo json_encode(['success' => false, 'error' => 'Неверные параметры товара']);
     die();
 }
@@ -31,16 +31,37 @@ $fields = [
     'PROPS' => [],
 ];
 
-$serviceCode = $_GET['service_code'];
+$cuttingService = getProductCuttingServices($productId);
+if (count($cuttingService) > 0) {
+    $basket = Sale\Basket::loadItemsForFUser(Sale\Fuser::getId(), Bitrix\Main\Context::getCurrent()->getSite());
 
-if ($serviceCode) {
-    $services = getProp($iblockId, $productId, $serviceCode);
+    $isEmptyService = true;
 
-    $fields['PROPS'][] = [
-        'NAME' => $services['NAME'],
-        'CODE' => 'SERVICE',
-        'VALUE' => $services['VALUE']
-    ];
+    foreach ($basket as $basketItem) {
+        if ($basketItem->getProductId() == $productId) {
+            $basketPropertyCollection = $basketItem->getPropertyCollection();
+            foreach ($basketPropertyCollection as $propertyItem) {
+                if ($propertyItem->getField('CODE') == 'CUTTING_SERVICE') {
+                    $fields['PROPS'][] = [
+                        'NAME' => $propertyItem->getField('NAME'),
+                        'CODE' => 'CUTTING_SERVICE',
+                        'VALUE' => $propertyItem->getField('VALUE')
+                    ];
+                    $isEmptyService = false;
+                    break;
+                }
+            }
+            break;
+        }
+    }
+
+    if ($isEmptyService) {
+        $fields['PROPS'][] = [
+            'NAME' => $cuttingService[0]['NAME'],
+            'CODE' => 'CUTTING_SERVICE',
+            'VALUE' => $cuttingService[0]['VALUE']
+        ];
+    }
 }
 
 $result = Basket::addProduct($fields);

@@ -62,7 +62,12 @@ foreach ($this->basketItems as $row)
 		'BRAND' => isset($row[$this->arParams['BRAND_PROPERTY'].'_VALUE'])
 			? $row[$this->arParams['BRAND_PROPERTY'].'_VALUE']
 			: '',
+        'IS_CUTTING' => false,
 	);
+
+    if ($row['PRODUCT_ID'] > 0) {
+        $rowData['IS_CUTTING'] = count(getProductCuttingServices($row['PRODUCT_ID'])) > 0;
+    }
 
 	// show price including ratio
 	if ($rowData['MEASURE_RATIO'] != 1)

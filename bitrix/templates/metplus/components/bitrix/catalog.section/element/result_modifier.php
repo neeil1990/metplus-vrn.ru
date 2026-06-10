@@ -15,12 +15,6 @@ $arParams = $component->applyTemplateModifications();
 $arResult['CATALOG_PRICE'] = [];
 
 foreach ($arResult['ITEMS'] as &$arItem) {
-    $arItem['ADD_TO_CART_CLASS'] = 'add-to-cart-action';
-
-    if ($arItem['PROPERTIES']['REZKA_GAZ_RASCHET']['VALUE'] || $arItem['PROPERTIES']['REZKA_ABRAZIV_RASCHET']['VALUE']) {
-        $arItem['ADD_TO_CART_CLASS'] = 'add-to-cart-with-cutting-action';
-    }
-
     foreach (array_keys($arItem["ITEM_ALL_PRICES"][0]["PRICES"]) as $catalog_price_id) {
         if (!isset($arResult['CATALOG_PRICE'][$catalog_price_id])) {
             $arResult['CATALOG_PRICE'][$catalog_price_id] = [

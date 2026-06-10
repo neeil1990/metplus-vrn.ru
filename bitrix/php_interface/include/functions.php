@@ -34,14 +34,24 @@ function isCustomPrice($ID_BLOCK, $ID)
     return (getCoefficientProduct($ID_BLOCK, $ID) && getLengthProduct($ID_BLOCK, $ID));
 }
 
-function getProductCuttingServices($ID_BLOCK, $ID)
+/**
+ * @param $ID
+ * @return array
+ */
+function getProductCuttingServices($ID)
 {
     $props = [];
     $codes = ['REZKA_GAZ_RASCHET', 'REZKA_ABRAZIV_RASCHET'];
 
-    foreach ($codes as $code) {
-        $prop = getProp($ID_BLOCK, $ID, $code);
-        $props[$prop['ID']] = $prop;
+    if (!CModule::IncludeModule('iblock')) {
+        return [];
+    }
+
+    $res = CIBlockElement::GetByID($ID);
+    if($ar_res = $res->GetNext()) {
+        foreach ($codes as $code) {
+            $props[] = getProp($ar_res['IBLOCK_ID'], $ID, $code);
+        }
     }
 
     return $props;

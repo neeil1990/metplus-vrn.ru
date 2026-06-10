@@ -151,6 +151,49 @@ if (empty($arResult['ERROR_MESSAGE']))
 			siteTemplateId: '<?=CUtil::JSEscape($component->getSiteTemplateId())?>',
 			templateFolder: '<?=CUtil::JSEscape($templateFolder)?>'
 		});
+
+        jQuery(document).ready(function($) {
+            $("#basket-root").on("click", ".cutting-service-options", function(e) {
+                e.preventDefault();
+
+                let $self = $(this);
+                let id = $self.data('id');
+                let product_id = $self.data('product_id');
+
+                $.fancybox.open({
+                    src  : `/ajax/cutting_services_options.php?product_id=${product_id}`,
+                    type : 'ajax',
+                    opts : {
+                        afterShow : function( instance, current ) {
+                            let $self = current.$content;
+                            $self.find('.update-action').click(function (e) {
+                                e.preventDefault();
+
+                                let type = $self.find('select').val();
+
+                                $.get("/ajax/update_cutting_type_in_cart.php", {
+                                    id : id,
+                                    product_id: product_id,
+                                    type : type,
+                                }, function(data) {
+                                    if (data.success === true) {
+                                        BX.Sale.BasketComponent.sendRequest('refreshAjax', {
+                                            fullRecalculation: 'Y',
+                                            otherParams: {
+                                                param: 'N'
+                                            }
+                                        });
+                                    }
+                                    instance.close();
+                                }, "json");
+                            });
+                        }
+                    }
+                });
+
+                return false;
+            });
+        });
 	</script>
 	<?
 }

@@ -65,7 +65,7 @@ if(count($arResult['ITEMS'])) :
                 <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="pieces" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
             <td>
-                <a href="javascript:void(0)" class="<?=$arItem['ADD_TO_CART_CLASS']?> product-item_cart-btn main-btn" id="<?=$arItem['ID']?>" iblock_id="<?=$arItem['IBLOCK_ID']?>">
+                <a href="javascript:void(0)" class="add-to-cart-action product-item_cart-btn main-btn" id="<?=$arItem['ID']?>">
                     <span class="glipf-cart"></span>
                 </a>
             </td>

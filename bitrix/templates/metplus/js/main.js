@@ -76,7 +76,7 @@ jQuery(document).ready(function($) {
     });
   }
 
-  function cartFlying($el)
+  function cartFly($el)
   {
     let $hc = $(".head-cart");
 
@@ -96,66 +96,24 @@ jQuery(document).ready(function($) {
     });
   }
 
-  function addToCartRequest(iblock_id, id, quantity, $cartBtn) {
-
-    if (!quantity) {
-      return false;
-    }
+  $(".product-table").on("click", ".add-to-cart-action", function() {
+    let $self = $(this);
+    let id = $self.attr('id');
+    let quantity = parseFloat($self.closest('tr').find('[name="meters"]').val());
 
     $.get("/ajax/", {
       component: "add_cart",
       id : id,
-      iblock_id : iblock_id,
-      service_code : sessionStorage.getItem('service_code'),
       quantity : quantity,
     }, function(data) {
 
-      cartFlying($cartBtn);
+      cartFly($self);
 
       $.get("/ajax/", { component: "cart_small" }).done(function(cart) {
         $('.head-cart').html(cart);
       });
 
     }, "json");
-  }
-
-  $(".product-table").on("click", ".add-to-cart-with-cutting-action", function(e) {
-    e.preventDefault();
-
-    let $cartBtn = $(this);
-    let id = $(this).attr('id');
-    let iblockId = $(this).attr('iblock_id');
-    let quantity = parseFloat($(this).closest('tr').find('[name="meters"]').val());
-
-    $.fancybox.open({
-      src  : `/ajax/cutting_services_options.php?iblock_id=${iblockId}&id=${id}`,
-      type : 'ajax',
-      opts : {
-        afterShow : function( instance, current ) {
-          let $self = current.$content;
-          $self.find('.product-item_cart-btn').click(function (e) {
-            e.preventDefault();
-
-            sessionStorage.setItem('service_code', $self.find('select').val())
-
-            instance.close();
-
-            addToCartRequest(iblockId, id, quantity, $cartBtn);
-          });
-        }
-      }
-    });
-
-    return false;
-  });
-
-  $(".product-table").on("click", ".add-to-cart-action", function() {
-
-    let iblock_id = $(this).attr('iblock_id');
-    let id = $(this).attr('id');
-    let quantity = parseFloat($(this).closest('tr').find('[name="meters"]').val());
-
-    addToCartRequest(iblock_id, id, quantity, $(this));
 
     return false;
   });
