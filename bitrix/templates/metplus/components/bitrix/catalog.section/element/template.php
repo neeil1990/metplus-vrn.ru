@@ -25,6 +25,8 @@ $this->setFrameMode(true);
 if(count($arResult['ITEMS'])) :
 ?>
 
+<p>Уважаемый покупатель! Конечная цена товара увеличивается, если вы выбираете нестандартный метраж. Вы можете покупать товар поштучно по обычной цене.</p>
+
 <table class="product-table" id="product-table">
     <thead>
         <tr>
