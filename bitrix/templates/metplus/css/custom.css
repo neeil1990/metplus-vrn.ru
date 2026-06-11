@@ -3,13 +3,8 @@
 }
 
 .cutting-service-options {
-    font-size: 14px;
-    height: auto;
-    min-width: auto;
+    font-size: 16px;
     padding: 5px 10px;
-    line-height: unset;
-    border-radius: 5px;
-    display: block;
-    width: fit-content;
-    margin: 5px 0;
+    line-height: normal;
+    display: unset;
 }
