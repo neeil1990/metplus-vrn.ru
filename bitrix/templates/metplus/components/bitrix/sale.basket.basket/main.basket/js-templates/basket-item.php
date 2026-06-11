@@ -18,15 +18,15 @@ use Bitrix\Main\Localization\Loc;
                 <span class="cart-table_mobile-text">Название товара</span>
                 {{NAME}}
 
+                {{#IS_CUTTING}}
+                <a href="#" class="cutting-service-options main-btn" data-id="{{ID}}" data-product_id="{{PRODUCT_ID}}">
+                    выбрать тип реза
+                </a>
+                {{/IS_CUTTING}}
+
                 <div class="basket-item-custom-notes" style="color: #2fc6f6; font-size: 13px; margin-top: 5px;">
                     {{NOTES}}
                 </div>
-
-                {{#IS_CUTTING}}
-                    <a href="#" class="cutting-service-options" data-id="{{ID}}" data-product_id="{{PRODUCT_ID}}" style="color: #073e71; font-size: 13px; margin-top: 5px;">
-                        выбрать тип реза
-                    </a>
-                {{/IS_CUTTING}}
             </td>
 
             <?

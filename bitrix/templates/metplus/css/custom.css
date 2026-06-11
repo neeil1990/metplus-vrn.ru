@@ -1,3 +1,15 @@
 .product-table-input {
     border-bottom: 1px solid #b2b2b2;
 }
+
+.cutting-service-options {
+    font-size: 14px;
+    height: auto;
+    min-width: auto;
+    padding: 5px 10px;
+    line-height: unset;
+    border-radius: 5px;
+    display: block;
+    width: fit-content;
+    margin: 5px 0;
+}

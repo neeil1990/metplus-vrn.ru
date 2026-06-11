@@ -80,6 +80,7 @@ if (empty($arResult['ERROR_MESSAGE']))
 		<?
 	}
 	?>
+
 	<div class="container" id="basket-root">
 
         <div class="cart-close"></div>

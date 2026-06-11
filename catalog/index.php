@@ -63,8 +63,6 @@ if($code &&  $cat == "catalog"){
 		"FILTER_VIEW_MODE" => "VERTICAL",
 		"USE_COMPARE" => "N",
 		"PRICE_CODE" => array(
-			0 => "BASE",
-			1 => "1-1000",
 			2 => "PER_METER",
 			3 => "PER_METER_PLUS20",
 		),
