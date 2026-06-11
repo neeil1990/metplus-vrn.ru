@@ -59,10 +59,10 @@ if(count($arResult['ITEMS'])) :
                 <td><?=$arItem["ITEM_ALL_PRICES"][0]["PRICES"][$price['CATALOG_GROUP_ID']]['PRINT_PRICE'] ?? 0?></td>
             <?php endforeach; ?>
             <td>
-                <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="meters" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
+                <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="meters" value="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
             <td>
-                <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="pieces" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
+                <input type="number" class="product-table-input" style="max-width: 70px;" min="0" step="0.1" placeholder="0.0" name="pieces" value="1" data-meters-in-one-piece="<?=$arItem["PROPERTIES"]["DLINA_RASCHET"]["VALUE"]?>">
             </td>
             <td>
                 <a href="javascript:void(0)" class="add-to-cart-action product-item_cart-btn main-btn" id="<?=$arItem['ID']?>">
