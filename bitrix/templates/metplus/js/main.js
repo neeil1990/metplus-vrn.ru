@@ -581,7 +581,7 @@ jQuery(document).ready(function($) {
     let self = $(this);
     let metersInOnePiece = getMetersInOnePiece(self);
     let pieces = parseFloat(self.val());
-    let meters = (pieces * metersInOnePiece).toFixed(1);
+    let meters = Math.round(pieces * metersInOnePiece);
 
     self.closest('tr').find('[name="meters"]').val(meters);
   });

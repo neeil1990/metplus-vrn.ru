@@ -9,7 +9,7 @@ class PriceUpdater {
     private static $pricePerMeterId = 17;
     private static $pricePerMeterPlus20Id = 18;
     private static $meterMeasureId = 1;
-    private static $ratioValue = 0.1;
+    private static $ratioValue = 1;
 
     public static function recalculatePricesAfter1C($arParams, $arFields)
     {
